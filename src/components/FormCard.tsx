@@ -45,9 +45,16 @@ const FormCard = ({ form }: { form: Form }) => {
       </CardContent>
       <CardFooter>
         {form.published && (
-          <Button asChild>
+          <Button asChild className="w-full mt-2 text-md gap-4">
             <Link href={`/forms/${form.id}`}>
               View submissions <BiRightArrowAlt />{" "}
+            </Link>
+          </Button>
+        )}
+        {!form.published && (
+          <Button asChild variant={"secondary"} className="w-full mt-2 text-md gap-4">
+            <Link href={`/builder/${form.id}`}>
+              Edit form <FaEdit />
             </Link>
           </Button>
         )}

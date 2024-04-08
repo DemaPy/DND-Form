@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs";
 import { FormSchemaType, formSchema } from "../schemas/form";
+import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 
 class UserNotFoundError extends Error {}
 
@@ -47,7 +48,7 @@ export async function createForm({ name, description }: FormSchemaType) {
   const user = await currentUser();
 
   if (!user) {
-    return new UserNotFoundError();
+    throw new UserNotFoundError();
   }
   try {
     const form = await prisma.form.create({
@@ -63,7 +64,19 @@ export async function createForm({ name, description }: FormSchemaType) {
     }
     return form.id;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof UserNotFoundError) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof PrismaClientValidationError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(JSON.stringify(error));
   }
 }
 
@@ -85,7 +98,50 @@ export async function getForms() {
     });
 
     return forms;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof UserNotFoundError) {
+      throw new Error(error.message);
+    }
+    if (error instanceof PrismaClientValidationError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(JSON.stringify(error));
+  }
+}
+
+export async function getFormById(formId: string) {
+  const user = await currentUser();
+
+  if (!user) {
+    throw new UserNotFoundError();
+  }
+
+  try {
+    const form = await prisma.form.findUnique({
+      where: {
+        userId: user.id,
+        id: +formId,
+      },
+    });
+
+    return form;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof UserNotFoundError) {
+      throw new Error(error.message);
+    }
+    if (error instanceof PrismaClientValidationError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(JSON.stringify(error));
   }
 }
