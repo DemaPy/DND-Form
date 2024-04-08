@@ -15,13 +15,13 @@ datasource db {
 }
 
 model Form {
-  id           Int      @id @default(autoincrement())
-  userId       String
-  createdAt    DateTime @default(now())
-  published    Boolean  @default(false)
-  name         String
-  descriuption String   @default("")
-  content      String   @default("[]")
+  id          Int      @id @default(autoincrement())
+  userId      String   @unique
+  createdAt   DateTime @default(now())
+  published   Boolean  @default(false)
+  name        String   @unique
+  description String   @default("")
+  content     String   @default("[]")
 
   visits      Int @default(0)
   submissions Int @default(0)
