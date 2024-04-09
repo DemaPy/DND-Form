@@ -19,7 +19,13 @@ import { Button } from "./ui/button";
 import { BiSolidTrash } from "react-icons/bi";
 
 const Designer = () => {
-  const { removeElement, addElement, elements } = useDesigner();
+  const {
+    removeElement,
+    selectedElement,
+    setSelectedElement,
+    addElement,
+    elements,
+  } = useDesigner();
   const dropable = useDroppable({
     id: "designer-drop-area",
     data: {
@@ -48,7 +54,15 @@ const Designer = () => {
 
   return (
     <div className="flex w-full h-full">
-      <div className="p-4 w-full">
+      <div
+        onClick={(ev) => {
+          ev.stopPropagation();
+          if (selectedElement) {
+            setSelectedElement(null);
+          }
+        }}
+        className="p-4 w-full"
+      >
         <div
           ref={dropable.setNodeRef}
           className={cn(
@@ -91,6 +105,7 @@ function DesignerElementWrapper({
   removeElement: (id: string) => void;
   element: FormElementInstance;
 }) {
+  const { selectedElement, setSelectedElement } = useDesigner();
   const [mouseOver, setMouseOver] = useState(false);
   const topHalf = useDroppable({
     id: element.id + "-top",
@@ -128,6 +143,10 @@ function DesignerElementWrapper({
       {...draggable.attributes}
       onMouseEnter={() => setMouseOver(true)}
       onMouseLeave={() => setMouseOver(false)}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelectedElement(element);
+      }}
       className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset"
     >
       <div
