@@ -1,6 +1,7 @@
 import React from "react";
 import { getFormById } from "../../../../actions/form";
 import FormBuilder from "@/components/FormBuilder";
+import DesignerContextProvider from "@/components/context/DesignerContext";
 
 const BuilderPage = async ({
   params: { formId },
@@ -11,7 +12,11 @@ const BuilderPage = async ({
   if (!form) {
     throw new Error("Form not found");
   }
-  return <FormBuilder form={form} />;
+  return (
+    <DesignerContextProvider>
+      <FormBuilder form={form} />
+    </DesignerContextProvider>
+  );
 };
 
 export default BuilderPage;

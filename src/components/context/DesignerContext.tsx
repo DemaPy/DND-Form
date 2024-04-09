@@ -6,6 +6,7 @@ import { FormElementInstance } from "../FormElements";
 type DesignerContext = {
   elements: FormElementInstance[];
   addElement: (index: number, element: FormElementInstance) => void;
+  removeElement: (id: string) => void;
 };
 
 export const DesignerContext = createContext<DesignerContext | null>(null);
@@ -23,9 +24,13 @@ export default function DesignerContextProvider({
     });
   };
 
+  const removeElement = (id: string) => {
+    setElements((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
-    <DesignerContext.Provider
-      value={{ elements, addElement }}
-    ></DesignerContext.Provider>
+    <DesignerContext.Provider value={{ elements, addElement, removeElement }}>
+      {children}
+    </DesignerContext.Provider>
   );
 }
