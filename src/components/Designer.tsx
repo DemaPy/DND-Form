@@ -2,8 +2,11 @@
 import { useDroppable } from "@dnd-kit/core";
 import DesignerSidebar from "./DesignerSidebar";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { FormElementInstance } from "./FormElements";
 
 const Designer = () => {
+  const [elements, setElements] = useState<FormElementInstance[]>([]);
   const dropable = useDroppable({
     id: "designer-drop-area",
     data: {
