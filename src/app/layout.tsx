@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "sonner";
+import Logo from "@/components/Logo";
+import { ModeToggle } from "@/components/ThemeToggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +29,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <nav className="flex items-center justify-between border-b border-border h-[60px] px-4 py-2">
+              <Logo />
+              <div className="flex items-center gap-4">
+                <ModeToggle />
+                <UserButton afterSignOutUrl="/sign-in" />
+              </div>
+            </nav>
             {children}
             <Toaster />
           </ThemeProvider>

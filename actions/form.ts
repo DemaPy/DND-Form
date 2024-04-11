@@ -145,3 +145,71 @@ export async function getFormById(formId: string) {
     throw new Error(JSON.stringify(error));
   }
 }
+
+export async function updateFormContent(id: number, jsonContent: string) {
+  const user = await currentUser();
+
+  if (!user) {
+    throw new UserNotFoundError();
+  }
+
+  try {
+    const form = await prisma.form.update({
+      where: {
+        id: id,
+        userId: user.id,
+      },
+      data: {
+        content: jsonContent,
+      },
+    });
+    return form;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof UserNotFoundError) {
+      throw new Error(error.message);
+    }
+    if (error instanceof PrismaClientValidationError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(JSON.stringify(error));
+  }
+}
+
+export async function PublishForm(id: number) {
+  const user = await currentUser();
+
+  if (!user) {
+    throw new UserNotFoundError();
+  }
+
+  try {
+    const form = await prisma.form.update({
+      where: {
+        id: id,
+        userId: user.id,
+      },
+      data: {
+        published: true,
+      },
+    });
+    return form;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof UserNotFoundError) {
+      throw new Error(error.message);
+    }
+    if (error instanceof PrismaClientValidationError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(JSON.stringify(error));
+  }
+}

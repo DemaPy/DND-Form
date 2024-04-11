@@ -7,7 +7,7 @@ type DesignerContext = {
   elements: FormElementInstance[];
   addElement: (index: number, element: FormElementInstance) => void;
   removeElement: (id: string) => void;
-
+  setElements: (elements: FormElementInstance[]) => void;
   selectedElement: FormElementInstance | null;
   setSelectedElement: (element: FormElementInstance | null) => void;
   updateElement: (id: string, data: FormElementInstance) => void;
@@ -49,9 +49,14 @@ export default function DesignerContextProvider({
     });
   };
 
+  const _setElements = (elements: FormElementInstance[]) => {
+    setElements(elements);
+  };
+
   return (
     <DesignerContext.Provider
       value={{
+        setElements: _setElements,
         updateElement,
         setSelectedElement: _setSelectedElement,
         selectedElement,

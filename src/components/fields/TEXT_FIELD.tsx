@@ -46,9 +46,32 @@ const TEXT_FIELD_FORM_ELEMENT: FormElement = {
     label: "Text field",
   },
   designerComponent: DesignerComponent,
-  formComponent: () => <div className="text-white">Form component</div>,
+  formComponent: FormComponent,
   properties: PropertiesComponent,
 };
+
+function FormComponent({
+  elementInstance,
+}: {
+  elementInstance: FormElementInstance;
+}) {
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <Label>
+        {elementInstance?.extraAttributes?.label || "Default"}
+        {elementInstance?.extraAttributes?.required && "*"}
+      </Label>
+      <Input
+        placeholder={elementInstance?.extraAttributes?.placeholder || ""}
+      />
+      {elementInstance?.extraAttributes?.helperText && (
+        <p className="text-muted-foreground text-[0.8rem]">
+          {elementInstance?.extraAttributes?.helperText}
+        </p>
+      )}
+    </div>
+  );
+}
 
 const propertiesSchema = z.object({
   label: z.string().min(4).max(50),
