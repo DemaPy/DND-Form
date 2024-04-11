@@ -66,12 +66,14 @@ function FormComponent({
   elementInstance,
   submitFunction,
   isInvalid,
+  defaultValue,
 }: {
   elementInstance: FormElementInstance;
   submitFunction?: SubmitFunction;
   isInvalid?: boolean;
+  defaultValue?: string;
 }) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(defaultValue || "");
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -84,7 +86,7 @@ function FormComponent({
         {elementInstance?.extraAttributes?.required && "*"}
       </Label>
       <Input
-        className={cn(error && "text-red-200")}
+        className={cn(error && "text-red-200 border-red-300")}
         value={value}
         onBlur={(ev) => {
           if (!submitFunction) return;
@@ -94,6 +96,7 @@ function FormComponent({
             ev.target.value
           );
 
+          setError(!valid);
           if (!valid) return;
 
           submitFunction(elementInstance.id, ev.target.value);

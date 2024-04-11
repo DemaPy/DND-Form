@@ -25,7 +25,7 @@ function FormSubmitComponent({
   const validateForm: () => boolean = useCallback(() => {
     for (const field of content) {
       const actualValue = formValues.current[field.id] || "";
-      const valid = FormElements[field.type];
+      const valid = FormElements[field.type].validate(field, actualValue);
 
       if (!valid) {
         formErrors.current[field.id] = true;
@@ -50,7 +50,7 @@ function FormSubmitComponent({
       setRenderKey(new Date().getTime());
       toast({
         title: "Error",
-        description: "please check the form for errors",
+        description: "please check the form errors",
         variant: "destructive",
       });
       return;
@@ -90,7 +90,15 @@ function FormSubmitComponent({
       >
         {content.map((element) => {
           const FormElement = FormElements[element.type].formComponent;
-          return <FormElement key={element.id} elementInstance={element} />;
+          return (
+            <FormElement
+              isInvalid={formErrors.current[element.id]}
+              submitValue={submitValue}
+              key={element.id}
+              elementInstance={element}
+              defaultValue={formValues.current[element.id]}
+            />
+          );
         })}
         <Button
           className="mt-8"
