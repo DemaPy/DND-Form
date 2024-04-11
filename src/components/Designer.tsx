@@ -42,12 +42,68 @@ const Designer = () => {
       const isDesignerBtnElement =
         active.data?.current?.isDesignerButtonElement;
 
-      if (isDesignerBtnElement) {
+      const isOverDesignerDropArea = over.data?.current?.isDesignerDropArea;
+
+      if (isDesignerBtnElement && isOverDesignerDropArea) {
         const type = active.data?.current?.type;
         const newElement = FormElements[type as ElementsType].construct(
           idGenerator()
         );
-        addElement(0, newElement);
+        addElement(elements.length, newElement);
+        return;
+      }
+
+      const isDroppingOnTop = over.data?.current?.isTop;
+      const isDroppingOnBottom = over.data?.current?.isBottom;
+      const isOverDesignerElement = isDroppingOnTop || isDroppingOnBottom;
+
+      const isDroppingSidebarItemOverDesignerEllement =
+        isDesignerBtnElement && isOverDesignerElement;
+
+      if (isDroppingSidebarItemOverDesignerEllement) {
+        const type = active.data?.current?.type;
+        const newElement = FormElements[type as ElementsType].construct(
+          idGenerator()
+        );
+
+        const overId = over.data?.current?.elementId;
+        const elementIndex = elements.findIndex((item) => +item.id === +overId);
+        if (elementIndex === -1) {
+          throw new Error("Element not found");
+        }
+
+        let indexForNewElement = elementIndex;
+        if (isDroppingOnBottom) {
+          indexForNewElement = elementIndex + 1;
+        }
+
+        addElement(indexForNewElement, newElement);
+        return;
+      }
+
+      const isDraggingDesignerElementOverDesignerElement =
+        isOverDesignerElement && active.data?.current?.isDesignerElement;
+
+      if (isDraggingDesignerElementOverDesignerElement) {
+        const overId = over.data?.current?.elementId;
+        const activeId = active.data?.current?.elementId;
+
+        let elementIndex = elements.findIndex((item) => +item.id === +overId);
+        const activeElemIndex = elements.findIndex(
+          (item) => +item.id === +activeId
+        );
+        if (elementIndex === -1 || activeElemIndex === -1) {
+          throw new Error("Element not found");
+        }
+
+        const activeElement = { ...elements[activeElemIndex] };
+        removeElement(activeId);
+
+        if (isDroppingOnBottom) {
+          elementIndex = elementIndex + 1;
+        }
+
+        addElement(elementIndex, activeElement);
       }
     },
   });
@@ -167,7 +223,10 @@ function DesignerElementWrapper({
         <>
           <div className="absolute right-0">
             <Button
-              onClick={() => removeElement(element.id)}
+              onClick={(ev) => {
+                ev.stopPropagation();
+                removeElement(element.id);
+              }}
               variant={"outline"}
               className="flex justify-center h-full border rounded-md"
             >
