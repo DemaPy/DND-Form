@@ -7,7 +7,7 @@ type TStatsCard = {
   paragraph: string;
   icon: ReactNode;
   value: string;
-  loading: boolean;
+  loading?: boolean;
   className: string;
 };
 

@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ElementsType,
   FormElement,
   FormElementInstance,
+  SubmitFunction,
 } from "../FormElements";
 import { MdTextFields } from "react-icons/md";
 import { Label } from "../ui/label";
@@ -22,8 +23,9 @@ import {
 } from "../ui/form";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
+import { cn } from "@/lib/utils";
 
-const type: ElementsType = "TEXT_FIELD";
+const type: ElementsType = "TextField";
 
 const extraAttributes = {
   label: "Text field",
@@ -37,7 +39,7 @@ const TEXT_FIELD_FORM_ELEMENT: FormElement = {
   construct: (id) => {
     return {
       id: id,
-      type: "TEXT_FIELD",
+      type: "TextField",
       extraAttributes: extraAttributes,
     };
   },
@@ -48,24 +50,64 @@ const TEXT_FIELD_FORM_ELEMENT: FormElement = {
   designerComponent: DesignerComponent,
   formComponent: FormComponent,
   properties: PropertiesComponent,
+  validate: (formElement: FormElementInstance, currValue) => {
+    const elem = formElement as FormElementInstance & {
+      extraAttributes: typeof extraAttributes;
+    };
+
+    if (elem.extraAttributes.required) {
+      return currValue.length > 0;
+    }
+    return true;
+  },
 };
 
 function FormComponent({
   elementInstance,
+  submitFunction,
+  isInvalid,
 }: {
   elementInstance: FormElementInstance;
+  submitFunction?: SubmitFunction;
+  isInvalid?: boolean;
 }) {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setError(isInvalid === true);
+  }, [isInvalid]);
   return (
     <div className="flex flex-col gap-2 w-full">
-      <Label>
+      <Label className={cn(error && "text-red-200")}>
         {elementInstance?.extraAttributes?.label || "Default"}
         {elementInstance?.extraAttributes?.required && "*"}
       </Label>
       <Input
+        className={cn(error && "text-red-200")}
+        value={value}
+        onBlur={(ev) => {
+          if (!submitFunction) return;
+
+          const valid = TEXT_FIELD_FORM_ELEMENT.validate(
+            elementInstance,
+            ev.target.value
+          );
+
+          if (!valid) return;
+
+          submitFunction(elementInstance.id, ev.target.value);
+        }}
+        onChange={(ev) => setValue(ev.target.value)}
         placeholder={elementInstance?.extraAttributes?.placeholder || ""}
       />
       {elementInstance?.extraAttributes?.helperText && (
-        <p className="text-muted-foreground text-[0.8rem]">
+        <p
+          className={cn(
+            "text-muted-foreground text-[0.8rem]",
+            error && "text-red-200"
+          )}
+        >
           {elementInstance?.extraAttributes?.helperText}
         </p>
       )}

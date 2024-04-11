@@ -6,7 +6,7 @@ const FormElementsSidebar = () => {
   return (
     <div>
       Elements
-      <SidebarButtonElement formElement={FormElements.TEXT_FIELD} />
+      <SidebarButtonElement formElement={FormElements.TextField} />
     </div>
   );
 };

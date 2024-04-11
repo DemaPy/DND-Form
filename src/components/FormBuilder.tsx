@@ -31,6 +31,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
       tolerance: 5,
     },
   });
+  const sensors = useSensors(mouseSensor, touchSensor);
 
   useEffect(() => {
     const JSONElements = JSON.parse(form.content);
@@ -41,7 +42,6 @@ const FormBuilder = ({ form }: { form: Form }) => {
     return <PublishedForm form={form} />;
   }
 
-  const sensors = useSensors(mouseSensor, touchSensor);
   return (
     <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">

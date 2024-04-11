@@ -26,7 +26,11 @@ export async function GetFormStats() {
   const visits = stats._sum.visits || 0;
   const submissions = stats._sum.submissions || 0;
 
-  let submissionsRate = visits > 0 && (submissions / visits) * 100;
+  let submissionsRate = 0;
+
+  if (visits > 0) {
+    submissionsRate = (submissions / visits) * 100;
+  }
 
   const bounceRate = 100 - submissions;
 
@@ -212,4 +216,73 @@ export async function PublishForm(id: number) {
 
     throw new Error(JSON.stringify(error));
   }
+}
+
+export async function GetFormWithSubmissions(id: number) {
+  const user = await currentUser();
+
+  if (!user) {
+    throw new UserNotFoundError();
+  }
+
+  try {
+    const form = await prisma.form.findUnique({
+      where: {
+        id: id,
+        userId: user.id,
+      },
+      include: {
+        FormSubmisions: true,
+      },
+    });
+    return form;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    if (error instanceof UserNotFoundError) {
+      throw new Error(error.message);
+    }
+    if (error instanceof PrismaClientValidationError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error(JSON.stringify(error));
+  }
+}
+
+export async function GetFormContentByUrl(formUrl: string) {
+  return await prisma.form.update({
+    select: {
+      content: true,
+    },
+    data: {
+      visits: {
+        increment: 1,
+      },
+    },
+    where: {
+      shareUrl: formUrl,
+    },
+  });
+}
+
+export async function SubmitForm(formUrl: string, content: string) {
+  return await prisma.form.update({
+    data: {
+      submissions: {
+        increment: 1,
+      },
+      FormSubmisions: {
+        create: {
+          content,
+        },
+      },
+    },
+    where: {
+      shareUrl: formUrl,
+      published: true,
+    },
+  });
 }
