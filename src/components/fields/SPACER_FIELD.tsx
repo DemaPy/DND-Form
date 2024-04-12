@@ -41,7 +41,7 @@ export const SPACER_FIELD_FORM_ELEMENT: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: <LuSeparatorHorizontal />,
+    icon: <LuSeparatorHorizontal className="h-8 w-8 text-primary cursor-grab"/>,
     label: "Spacer field",
   },
   designerComponent: DesignerComponent,

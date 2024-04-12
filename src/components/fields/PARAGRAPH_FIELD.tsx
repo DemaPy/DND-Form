@@ -41,7 +41,7 @@ export const PARAGRAPH_FIELD_FORM_ELEMENT: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: <BsTextParagraph />,
+    icon: <BsTextParagraph className="h-8 w-8 text-primary cursor-grab"/>,
     label: "Paragraph field",
   },
   designerComponent: DesignerComponent,

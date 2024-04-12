@@ -41,7 +41,7 @@ export const TITLE_FIELD_FORM_ELEMENT: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: <LuHeading1 />,
+    icon: <LuHeading1 className="h-8 w-8 text-primary cursor-grab"/>,
     label: "Title field",
   },
   designerComponent: DesignerComponent,

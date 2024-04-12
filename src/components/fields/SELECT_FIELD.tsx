@@ -64,7 +64,7 @@ export const SELECT_FIELD_FORM_ELEMENT: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: <RxDropdownMenu />,
+    icon: <RxDropdownMenu className="h-8 w-8 text-primary cursor-grab"/>,
     label: "Select Field",
   },
   designerComponent: DesignerComponent,

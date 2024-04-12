@@ -55,7 +55,7 @@ export const TEXTAREA_FIELD_FORM_ELEMENT: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: <BsTextareaResize />,
+    icon: <BsTextareaResize className="h-8 w-8 text-primary cursor-grab" />,
     label: "TextArea Field",
   },
   designerComponent: DesignerComponent,

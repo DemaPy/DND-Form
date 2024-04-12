@@ -19,7 +19,7 @@ export const SEPARATOR_FIELD_FORM_ELEMENT: FormElement = {
     type,
   }),
   designerButtonElement: {
-    icon: <RiSeparator />,
+    icon: <RiSeparator className="h-8 w-8 text-primary cursor-grab"/>,
     label: "Separator field",
   },
   designerComponent: DesignerComponent,

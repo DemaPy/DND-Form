@@ -41,7 +41,7 @@ export const SUBTITLE_FIELD_FORM_ELEMENT: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: <LuHeading2 />,
+    icon: <LuHeading2 className="h-8 w-8 text-primary cursor-grab"/>,
     label: "SubTitle field",
   },
   designerComponent: DesignerComponent,

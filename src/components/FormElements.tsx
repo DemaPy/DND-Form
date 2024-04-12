@@ -7,7 +7,7 @@ import { SEPARATOR_FIELD_FORM_ELEMENT } from "./fields/SEPARATOR_FIELD";
 import { SPACER_FIELD_FORM_ELEMENT } from "./fields/SPACER_FIELD";
 import { SUBTITLE_FIELD_FORM_ELEMENT } from "./fields/SUBTITLE_FIELD";
 import { TEXTAREA_FIELD_FORM_ELEMENT } from "./fields/TEXTAREA_FIELD";
-import TEXT_FIELD_FORM_ELEMENT from "./fields/TEXT_FIELD";
+import { TEXT_FIELD_FORM_ELEMENT } from "./fields/TEXT_FIELD";
 import { TITLE_FIELD_FORM_ELEMENT } from "./fields/TITLE_FIELD";
 
 export type SubmitFunction = (key: string, value: string) => void;
