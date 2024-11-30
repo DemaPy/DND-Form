@@ -4,8 +4,6 @@ import { Button } from "./ui/button";
 import { useDraggable } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
 
-type Props = {};
-
 const SidebarButtonElement = ({
   formElement,
 }: {
