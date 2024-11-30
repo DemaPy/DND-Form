@@ -10,11 +10,10 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 
-import { BsFileEarmark, BsFileEarmarkPlus } from "react-icons/bs";
-import { ImSpinner, ImSpinner2 } from "react-icons/im";
+import { BsFileEarmark } from "react-icons/bs";
+import { ImSpinner2 } from "react-icons/im";
 import { Button } from "./ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
@@ -23,6 +22,7 @@ import { toast } from "sonner";
 import { FormSchemaType, formSchema } from "../../schemas/form";
 import { createForm } from "../../actions/form";
 import { useRouter } from "next/navigation";
+import { Label } from "./ui/label";
 
 const CreateFormBtn = () => {
   const router = useRouter();
@@ -64,22 +64,32 @@ const CreateFormBtn = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
+                    Name{" "}
+                    <span className="text-xs text-primary">(required)</span>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="Enter form name" {...field} />
                     </FormControl>
                   </FormLabel>
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
+                    Description{" "}
+                    <span className="text-xs text-muted-foreground">
+                      (optional)
+                    </span>
                     <FormControl>
-                      <Textarea rows={5} {...field} />
+                      <Textarea
+                        placeholder="Enter form description"
+                        rows={8}
+                        className="resize-none"
+                        {...field}
+                      />
                     </FormControl>
                   </FormLabel>
                 </FormItem>

@@ -1,6 +1,3 @@
-import { ModeToggle } from "@/components/ThemeToggle";
-import Image from "next/image";
-import DashboardPage from "./layout";
 import { Suspense } from "react";
 import CardStatsWrapper from "@/components/CardStatsWrapper";
 import StatsCards from "@/components/StatsCards";

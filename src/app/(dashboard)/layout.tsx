@@ -1,6 +1,3 @@
-import Logo from "@/components/Logo";
-import { ModeToggle } from "@/components/ThemeToggle";
-import { UserButton } from "@clerk/nextjs";
 import React, { PropsWithChildren } from "react";
 
 const DashboardPage = ({ children }: PropsWithChildren) => {
