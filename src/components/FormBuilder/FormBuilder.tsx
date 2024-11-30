@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import useDesigner from "../hooks/useDesigner";
 import PublishedForm from "../PublishedForm";
 import FormBuilderTitle from "./FormBuilderTitle";
+import FormBuilderNavBar from "./FormBuilderNavBar";
 
 const FormBuilder = ({ form }: { form: Form }) => {
   const { setElements } = useDesigner();
@@ -46,18 +47,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
   return (
     <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">
-        <nav className="flex justify-between border-b-2 p-4 gap-3 items-center">
-          <FormBuilderTitle title={form.name} />
-          <div className="flex items-center gap-2">
-            <PreviewDialogBtn />
-            {!form.published && (
-              <>
-                <SaveFormBtn id={form.id} />
-                <PublishFormBtn id={form.id} />
-              </>
-            )}
-          </div>
-        </nav>
+        <FormBuilderNavBar form={form} />
         <div className="flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[200px] bg-accent bg-[url(/bg.svg)]">
           <Designer />
         </div>

@@ -7,7 +7,7 @@ import {
 } from "@dnd-kit/core";
 import DesignerSidebar from "./DesignerSidebar";
 import { cn } from "@/lib/utils";
-import { ElementType, useState } from "react";
+import { useState } from "react";
 import {
   ElementsType,
   FormElementInstance,

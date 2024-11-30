@@ -20,6 +20,8 @@ const DragOverlayWrapper = () => {
 
   if (!draggedItem) return null;
 
+  console.log(draggedItem);
+
   let node = <div>No drag</div>;
   const type = draggedItem?.data?.current?.type as ElementsType;
   const isDesignerBtnElement =
