@@ -1,9 +1,23 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { auth, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { FormSchemaType, formSchema } from "../schemas/form";
 import { PrismaClientValidationError } from "@prisma/client/runtime/library";
+
+function handleError(error: any) {
+  if (error instanceof UserNotFoundError) {
+    throw new Error(error.message);
+  }
+  if (error instanceof PrismaClientValidationError) {
+    throw new Error(error.message);
+  }
+
+  if (error instanceof Error) {
+    throw new Error(error.message);
+  }
+  throw new Error("Something went wrong.");
+}
 
 class UserNotFoundError extends Error {}
 
@@ -67,20 +81,8 @@ export async function createForm({ name, description }: FormSchemaType) {
       throw new Error("Something went wrong.");
     }
     return form.id;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    if (error instanceof UserNotFoundError) {
-      throw new Error(error.message);
-    }
-
-    if (error instanceof PrismaClientValidationError) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(JSON.stringify(error));
+  } catch (error: any) {
+    handleError(error);
   }
 }
 
@@ -102,19 +104,8 @@ export async function getForms() {
     });
 
     return forms;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    if (error instanceof UserNotFoundError) {
-      throw new Error(error.message);
-    }
-    if (error instanceof PrismaClientValidationError) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(JSON.stringify(error));
+  } catch (error: any) {
+    handleError(error);
   }
 }
 
@@ -134,19 +125,8 @@ export async function getFormById(formId: string) {
     });
 
     return form;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    if (error instanceof UserNotFoundError) {
-      throw new Error(error.message);
-    }
-    if (error instanceof PrismaClientValidationError) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(JSON.stringify(error));
+  } catch (error: any) {
+    handleError(error);
   }
 }
 
@@ -169,18 +149,7 @@ export async function updateFormContent(id: number, jsonContent: string) {
     });
     return form;
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    if (error instanceof UserNotFoundError) {
-      throw new Error(error.message);
-    }
-    if (error instanceof PrismaClientValidationError) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(JSON.stringify(error));
+    handleError(error);
   }
 }
 
@@ -203,18 +172,7 @@ export async function PublishForm(id: number) {
     });
     return form;
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    if (error instanceof UserNotFoundError) {
-      throw new Error(error.message);
-    }
-    if (error instanceof PrismaClientValidationError) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(JSON.stringify(error));
+    handleError(error);
   }
 }
 
@@ -237,52 +195,49 @@ export async function GetFormWithSubmissions(id: number) {
     });
     return form;
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-
-    if (error instanceof UserNotFoundError) {
-      throw new Error(error.message);
-    }
-    if (error instanceof PrismaClientValidationError) {
-      throw new Error(error.message);
-    }
-
-    throw new Error(JSON.stringify(error));
+    handleError(error);
   }
 }
 
 export async function GetFormContentByUrl(formUrl: string) {
-  return await prisma.form.update({
-    select: {
-      content: true,
-    },
-    data: {
-      visits: {
-        increment: 1,
+  try {
+    return await prisma.form.update({
+      select: {
+        content: true,
       },
-    },
-    where: {
-      shareUrl: formUrl,
-    },
-  });
+      data: {
+        visits: {
+          increment: 1,
+        },
+      },
+      where: {
+        shareUrl: formUrl,
+      },
+    });
+  } catch (error) {
+    handleError(error);
+  }
 }
 
 export async function SubmitForm(formUrl: string, content: string) {
-  return await prisma.form.update({
-    data: {
-      submissions: {
-        increment: 1,
-      },
-      FormSubmisions: {
-        create: {
-          content,
+  try {
+    return await prisma.form.update({
+      data: {
+        submissions: {
+          increment: 1,
+        },
+        FormSubmisions: {
+          create: {
+            content,
+          },
         },
       },
-    },
-    where: {
-      shareUrl: formUrl,
-      published: true,
-    },
-  });
+      where: {
+        shareUrl: formUrl,
+        published: true,
+      },
+    });
+  } catch (error) {
+    handleError(error);
+  }
 }
