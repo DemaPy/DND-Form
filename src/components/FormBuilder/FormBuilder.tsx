@@ -1,10 +1,10 @@
 "use client";
 
 import { Form } from "@prisma/client";
-import SaveFormBtn from "./SaveFormBtn";
-import PublishFormBtn from "./PublishFormBtn";
-import PreviewDialogBtn from "./PreviewDialogBtn";
-import Designer from "./Designer";
+import SaveFormBtn from "../SaveFormBtn";
+import PublishFormBtn from "../PublishFormBtn";
+import PreviewDialogBtn from "../PreviewDialogBtn";
+import Designer from "../Designer";
 import {
   DndContext,
   MouseSensor,
@@ -12,10 +12,11 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import DragOverlayWrapper from "./DragOverlayWrapper";
+import DragOverlayWrapper from "../DragOverlayWrapper";
 import { useEffect } from "react";
-import useDesigner from "./hooks/useDesigner";
-import PublishedForm from "./PublishedForm";
+import useDesigner from "../hooks/useDesigner";
+import PublishedForm from "../PublishedForm";
+import FormBuilderTitle from "./FormBuilderTitle";
 
 const FormBuilder = ({ form }: { form: Form }) => {
   const { setElements } = useDesigner();
@@ -46,10 +47,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
     <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">
         <nav className="flex justify-between border-b-2 p-4 gap-3 items-center">
-          <h2 className="truncate font-medium">
-            <span className="text-muted-foreground mr-2">Form:</span>
-            {form.name}
-          </h2>
+          <FormBuilderTitle title={form.name} />
           <div className="flex items-center gap-2">
             <PreviewDialogBtn />
             {!form.published && (

@@ -1,6 +1,6 @@
 import React from "react";
 import { getFormById } from "../../../../actions/form";
-import FormBuilder from "@/components/FormBuilder";
+import FormBuilder from "@/components/FormBuilder/FormBuilder";
 import DesignerContextProvider from "@/components/context/DesignerContext";
 
 const BuilderPage = async ({

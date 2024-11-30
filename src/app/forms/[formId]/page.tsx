@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import { GetFormWithSubmissions, getFormById } from "../../../../actions/form";
-import FormBuilder from "@/components/FormBuilder";
-import DesignerContextProvider from "@/components/context/DesignerContext";
+import FormBuilder from "@/components/FormBuilder/FormBuilder";
 import VisitBtn from "@/components/VisitBtn";
 import FormLinkShare from "@/components/FormLinkShare";
 import StatsCard from "@/components/StatsCard";
