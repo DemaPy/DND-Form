@@ -139,11 +139,7 @@ const Designer = () => {
           {elements.length > 0 && (
             <div className="flex flex-col w-full gap-2 p-4">
               {elements.map((element) => (
-                <DesignerElementWrapper
-                  removeElement={removeElement}
-                  key={element.id}
-                  element={element}
-                />
+                <DesignerElementWrapper key={element.id} element={element} />
               ))}
             </div>
           )}
@@ -154,14 +150,8 @@ const Designer = () => {
   );
 };
 
-function DesignerElementWrapper({
-  removeElement,
-  element,
-}: {
-  removeElement: (id: string) => void;
-  element: FormElementInstance;
-}) {
-  const { selectedElement, setSelectedElement } = useDesigner();
+function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
+  const { selectedElement, setSelectedElement, removeElement } = useDesigner();
   const [mouseOver, setMouseOver] = useState(false);
   const topHalf = useDroppable({
     id: element.id + "-top",
